@@ -1,0 +1,41 @@
+{
+  "name": "@tungstools/tesuto",
+  "version": "0.0.7",
+  "devDependencies": {
+    "@types/node": "20.12.7",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tungstools/tesuto"
+  },
+  "files": [
+    "dist/tesuto.js",
+    "dist/tesuto.d.ts"
+  ],
+  "bin": {
+    "tesuto": "./dist/tesuto.js"
+  },
+  "type": "module",
+  "tsup": {
+    "dts": false,
+    "minify": false,
+    "target": "node20",
+    "format": [
+      "esm"
+    ],
+    "entry": {
+      "tesuto": "entry.ts"
+    },
+    "clean": true
+  },
+  "scripts": {
+    "build": "tsup",
+    "start": "node dist/tesuto.js --root=example_project"
+  },
+  "dependencies": {
+    "esbuild": "^0.20.2",
+    "source-map": "^0.8.0-beta.0"
+  }
+}

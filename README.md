@@ -1,5 +1,5 @@
 # tesuto
-A TypeScript testing framework that doesn't require 200+ dependencies to run.
+A TypeScript/JavaScript testing framework that doesn't require 200+ dependencies to run.
 
 ## Features
 - Simple and familiar API

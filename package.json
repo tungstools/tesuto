@@ -32,7 +32,8 @@
   },
   "scripts": {
     "build": "tsup",
-    "start": "node dist/tesuto.js --root=example_project"
+    "watch": "tsup --watch",
+    "start": "node --experimental-vm-modules dist/tesuto.js --root=\"example_project\" --verbose"
   },
   "dependencies": {
     "esbuild": "^0.20.2",

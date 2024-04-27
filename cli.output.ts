@@ -116,4 +116,20 @@ function leaveProgressBarArea() {
     __currentProgressBarInstances.forEach(() => process.stdout.write("\n"));
 }
 
-export { log, error, createProgressBar, leaveProgressBarArea };
+// - Verbose Mode -
+
+function verbose(text: string, color?: keyof typeof __TEXT_COLOR_MAP__, background?: keyof typeof __BACKGROUND_COLOR_MAP__, style?: keyof typeof __TEXT_STYLE_MAP__) {
+    if (process.env.VERBOSE || (globalThis.cmdConfig.verboseMode)) {
+        log("[VERBOSE] " + text, color ?? "gray", background, style);
+    }
+}
+
+function fmt1$(text: string) {
+    return ansiFormat(text, "cyan", "black", "normal");
+}
+
+function fmt2$(text: string) {
+    return ansiFormat(text, "red", "black", "normal");
+}
+
+export { ansiFormat, log, error, createProgressBar, leaveProgressBarArea, verbose, fmt1$, fmt2$ };

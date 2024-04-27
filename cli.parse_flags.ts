@@ -2,23 +2,27 @@ import { error } from "./cli.output";
 
 let __REGISTERED_FLAGS = new Map();
 
+// TODO(tl): add advanced command line features.
 type FlagOptions = {
     standalone?: boolean,
     mustBeWith?: string,
 }
 
-function registerFlag<T extends "boolean" | "string" | "number",
+function registerFlag<T extends "boolean" | "string" | "float" | "integer",
     U = T extends "boolean" ? boolean : T extends "string" ? string : number>(flagname: string, type: T, handler: (arg: U) => void, options?: FlagOptions) {
     __REGISTERED_FLAGS.set(flagname, { type, handler, options });
 }
 
-function parseCommandLineValue(value: string, type: "boolean" | "string" | "number") {
+function parseCommandLineValue(value: string, type: "boolean" | "string" | "float" | "integer" = "string") {
     let parsedValue;
     switch (type) {
         case "boolean":
             parsedValue = value === "" ? true : value === "true";
             break;
-        case "number":
+        case "integer": 
+            parsedValue = parseInt(value);
+            break;
+        case "float":
             parsedValue = parseFloat(value);
             break;
         case "string":

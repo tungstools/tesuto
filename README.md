@@ -8,10 +8,11 @@ A TypeScript/JavaScript testing framework that doesn't require 200+ dependencies
 ## Features
 - Simple and familiar API
 - Out-of-box TypeScript support
+- A "labeled test block" grammar, makes it easier to pair tests with their targets
 - Assertion and ~~mocking~~ (not yet implemented)
 - Runs parallelly using Workers, or not if you don't wish
 - VSCode integration (working on it)
 
 ## License
 
-Public Domain CC-0, or MIT (c) Tung Leen if you perfer.
+Public Domain CC-0, or MIT (c) Tung Leen if you perfer. 

@@ -4,6 +4,8 @@ import { log, error, verbose, ansiFormat, fmt1$ } from "./cli.output";
 import { loadConfig, parseCommandLine, registerFlag } from "./cli";
 import { directoryWalker, findTestFiles } from "./entry.find_file";
 import { loadConfigFile } from "./config";
+import { readFileSync } from "node:fs";
+import * as esbuild from "esbuild";
 
 function splash() {
     log("Testing via " + ansiFormat("Tesuto", "cyan", "black", "normal"));
@@ -33,6 +35,14 @@ function registerCli() {
     });
 }
 
+function runTest() {
+
+}
+
+function injectTest() {
+
+}
+
 async function entry() {
     initGlobalThis();
     registerCli();
@@ -58,14 +68,17 @@ async function entry() {
         verbose("Using files provided by command line.");
     }
 
-    directoryWalker(".", (file) => {
-        verbose(`Found file ${fmt1$(file)}.`);
-    }, (folder) => {
-        verbose(`Found folder ${fmt1$(folder)}.`);
-        return true;
-    });
+    let contents: { file: string, content: string }[] = [];
+    files.forEach((f) => {
+        if (f.endsWith(".ts")) {
+            verbose(`Transforming file ${ansiFormat(f, "cyan", "black", "normal")}.`);
+            let content = readFileSync(f, "utf-8");
+            contents.push({ file: f, content: esbuild.transformSync(content, { loader: "ts" }).code });
+        }
+    })
+    verbose(`Transformed ${fmt1$(contents.length.toString())} files. Pending to run...`);
+    console.log(contents);
 
-    console.log(files);
 }
 
 entry();

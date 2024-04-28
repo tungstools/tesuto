@@ -18,27 +18,19 @@ function directoryWalker(root: string, onFile: (file: string) => void = () => { 
     }
 }
 
+function isTestFile(file: string) {
+    return file.endsWith(".test.ts") || file.endsWith(".test.js");
+}
+
 function findTestFiles() {
     let result: string[] = [];
-    /*
-        const onFolder = (folder: string) => {
-            if (useWorkspace) {
-                if (workspaceFolder.includes(folder)) return true;
-                return false;
-            } else {
-                if (isIgnoredFolders(path.basename(folder))) return false;
-                return true;
-            }
+
+    const onFile = (file: string) => {
+        if (isTestFile(path.basename(file))) {
+            result.push(file);
         }
-    
-        const onFile = (file: string) => {
-            if (isTestFile(path.basename(file))) {
-                result.push(file);
-            }
-        }
-    
-        directoryWalker(directoryPath, onFile, onFolder);
-    */
+    }
+    directoryWalker(".", onFile);
     if (result.length == 0) {
         verbose(`No test files found.`);
     } else {

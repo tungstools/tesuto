@@ -124,6 +124,7 @@ function verbose(text: string, color?: keyof typeof __TEXT_COLOR_MAP__, backgrou
     }
 }
 
+// FIXME(tl): unexcepted color reset after formatting. just use chalk
 function fmt1$(text: string) {
     return ansiFormat(text, "cyan", "black", "normal");
 }

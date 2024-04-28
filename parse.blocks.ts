@@ -1,6 +1,25 @@
 
 import fs from "node:fs";
 
+// UPDATE: no longer store column and line number in label. If needed by source-map it can be recalculated from the offset.
+type TestBlock = {
+    label: string,
+    start: number,
+    end: number,
+    innerStart: number,
+    innerEnd: number
+}
+
+type UnblockedCode = {
+    start: number,
+    end: number
+}
+
+type TestSourceCode = {
+    file: string,
+    blocks: (TestBlock | UnblockedCode)[]
+}
+
 // Test blocks are top-level labels followed by a colon, and then a block of code. Rather than parsing the code, we just extract the block - 
 // which means we basically just looking for paired braces, ignoring those inside strings or regexes or comments. When bundling, we will just 
 // use the drop labels feature of esbuild (https://esbuild.github.io/api/#drop-labels) to remove everything we don't need.
@@ -44,7 +63,7 @@ function getIdentifierBehind(str: string, index: number): [identifier: string, i
                 break;
             }
             case Status.Identifier: {
-                if (char.match(/[a-zA-Z0-9_]/)) {
+                if (char.match(/[a-zA-Z0-9_\$]/)) {
                     identifier += char;
                 } else {
                     return [identifier.split("").reverse().join(""), i];
@@ -187,16 +206,7 @@ function getBlocks(str: string) {
         i++;
     }
 
-    // UPDATE: no longer store column and line number in label. If needed by source-map it can be recalculated from the offset.
-    type Label = {
-        label: string,
-        start: number,
-        end: number,
-        innerStart: number,
-        innerEnd: number
-    }
-
-    let result: Label[] = [];
+    let result: TestBlock[] = [];
 
     for (let index = 0; index < startOffsets.length; index++) {
         const label = startOffsets[index].label;
@@ -212,6 +222,21 @@ function getBlocks(str: string) {
             });
         }
     }
+
+    return result;
+}
+
+function getUnblockedCode(src: string, blocks: TestBlock[]) {
+    let result: (TestBlock | UnblockedCode)[] = [];
+    let lastEnd = 0;
+
+    blocks.forEach((block) => {
+        result.push({ start: lastEnd, end: block.start });
+        result.push(block);
+        lastEnd = block.end;
+    });
+
+    result.push({ start: lastEnd, end: src.length });
 
     return result;
 }

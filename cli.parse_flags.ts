@@ -34,7 +34,7 @@ function parseCommandLineValue(value: string, type: "boolean" | "string" | "floa
 }
 
 function parseCommandLine(args: string[]) {
-    const flagParser = /--(\w+)=*(.*)/gm;
+    const flagParser = /--([\w-]+)=*(.*)/gm;
     let files: string[] = [];
 
     args.forEach(arg => {

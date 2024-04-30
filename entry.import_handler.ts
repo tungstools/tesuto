@@ -3,23 +3,29 @@ import * as esbuild from "esbuild";
 import path from "node:path";
 import { TEMP_FOLDER } from "./constants";
 
-async function buildTestFile(entry: string) {
+const replaceImportPlugin = (relative: string) => {
+    return {
+        name: "replace-import",
+        setup(build: esbuild.PluginBuild) {
+            build.onResolve({ filter: /.*/, namespace: "file" }, async (args) => {
+                console.log("request", args);
+                console.log(relative);
+                let result = await build.resolve(args.path, { kind: args.kind, resolveDir: path.join(absRoot, relative) });
+                console.log("result", result);
+                return result;
+            });
+        }
+    }
+}
+
+async function buildTestFile(entry: string, relativeDir: string) {
     await esbuild.build({
-        entryPoints: [entry],
+        entryPoints: [path.join(absRoot, TEMP_FOLDER, entry)],
         bundle: true,
         outfile: path.join(absRoot, TEMP_FOLDER, `bundled.${entry}`),
+        absWorkingDir: absRoot,
         plugins: [
-            {
-                name: "replace-import",
-                setup(build) {
-                    build.onResolve({ filter: /.*/ }, (args) => {
-                        console.log(args);
-                        if (args.kind == "entry-point") return { path: path.join(absRoot, TEMP_FOLDER, args.path) };
-                        // FIXME(tl): looking for esbuild resolve algorithm
-                        if (args.kind == "import-statement") return { path: path.join(absRoot, args.path + ".ts")};
-                    });
-                }
-            }
+            replaceImportPlugin(relativeDir)
         ]
     });
 }

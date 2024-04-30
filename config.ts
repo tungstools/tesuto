@@ -31,6 +31,7 @@ function loadConfig(config: { default: TesutoConfig }) {
         globalThis.config[key] = value;
     })
     // TODO(tl): merge config input by command line and config file, even multiple config file. looking for a solution like antfu/unconfig
+    // but first, define what should be in config
 }
 
 export { loadConfigFile, loadConfig };

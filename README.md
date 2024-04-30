@@ -1,5 +1,6 @@
 # tesuto
 A TypeScript/JavaScript testing framework that doesn't require 200+ dependencies to run.
+> actually only esbuild now. long live esbuild!
 
 > [!WARNING]
 > * This project is still in early development, and is not ready for production use.

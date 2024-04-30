@@ -6,7 +6,9 @@ declare global {
         bail: number;
         only: boolean;
     }
-    var config: any;
+    var config: TesutoConfig;
+    var absRoot: string;
+    var testFileExtensions: string[];
 }
 
 export {}

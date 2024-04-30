@@ -15,11 +15,12 @@
     "dist/tesuto.d.ts"
   ],
   "bin": {
-    "tesuto": "./dist/tesuto.js"
+    "tesuto": "dist/tesuto.js"
   },
   "type": "module",
+  "types": "dist/tesuto.d.ts",
   "tsup": {
-    "dts": false,
+    "dts": true,
     "minify": false,
     "target": "node20",
     "format": [
@@ -33,11 +34,13 @@
   "scripts": {
     "build": "tsup",
     "watch": "tsup --watch",
-    "start": "node --experimental-vm-modules dist/tesuto.js --root=\"example_project\" --verbose"
+    "example": "node --experimental-vm-modules dist/tesuto.js --root=\"example_project\" --verbose --clear-cache"
   },
   "dependencies": {
-    "node": "^22.0.0",
     "esbuild": "^0.20.2",
     "source-map": "^0.8.0-beta.0"
+  },
+  "engines": {
+    "node": ">= 22"
   }
 }

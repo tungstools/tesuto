@@ -1,5 +1,5 @@
 import path from "node:path";
-import { clearCacheFolder } from "./cache";
+import { clearCacheFolder, tryMakeCacheFolder } from "./cache";
 import { log, ansiFormat, error, verbose, fmt1$ } from "./cli.output";
 import { registerFlag, parseCommandLine } from "./cli.parse_flags";
 import { loadConfig, loadConfigFile } from "./config";
@@ -55,6 +55,8 @@ async function init() {
     splash();
     verbose("Verbose mode enabled, and I'll be more chatty :)");
     verbose(`Root directory set to ${fmt1$(cmdConfig.root)}.`);
+
+    tryMakeCacheFolder();
 
     return testParams;
 }

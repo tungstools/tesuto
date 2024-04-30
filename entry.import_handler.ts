@@ -1,7 +1,7 @@
 
 import * as esbuild from "esbuild";
 import path from "node:path";
-import { TEMP_FOLDER } from "./constants";
+import { CACHE_FOLDER } from "./constants";
 
 const replaceImportPlugin = (relative: string) => {
     return {
@@ -19,10 +19,11 @@ const replaceImportPlugin = (relative: string) => {
 }
 
 async function buildTestFile(entry: string, relativeDir: string) {
+    console.log(entry);
     await esbuild.build({
-        entryPoints: [path.join(absRoot, TEMP_FOLDER, entry)],
+        entryPoints: [path.join(absRoot, CACHE_FOLDER, entry)],
         bundle: true,
-        outfile: path.join(absRoot, TEMP_FOLDER, `bundled.${entry}`),
+        outfile: path.join(absRoot, CACHE_FOLDER, `bundled`, path.basename(entry)),
         absWorkingDir: absRoot,
         plugins: [
             replaceImportPlugin(relativeDir)

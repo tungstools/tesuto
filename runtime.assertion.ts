@@ -25,3 +25,10 @@ namespace Matcher {
         }
     }
 }
+
+function mismatchInterpreter(mismatch: TesutoAssertionMismatch) {
+    console.log('Expected:', mismatch.expected);
+    console.log('Actual:', mismatch.actual);
+}
+
+export { Matcher, TesutoAssertionMismatch, mismatchInterpreter };

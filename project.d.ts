@@ -17,3 +17,10 @@ type TesutoConfig = {
 }
 
 declare function defineTesutoConfig(config: TesutoConfig): TesutoConfig;
+
+// TODO: generate expect based on the source code
+declare function test(description: string, testFunction: () => void): void;
+declare const it = test;
+declare function describe(description: string, testGroupFunction: () => void): void;
+declare function expect(a: any): any;
+

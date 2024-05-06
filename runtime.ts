@@ -14,7 +14,18 @@ function describe(desc: string, testFn: () => any) {
     currentTests.push({ desc, tests });
 }
 
-function test(desc: string, testFn: () => any) {
+function test(testContentFunction: () => any): void;
+function test(description: string, testContentFunction: () => any): void;
+function test(arg1: string | (() => any), arg2?: () => any) {
+    let desc: string;
+    let testFn: () => any;
+    if (typeof arg1 === "string") {
+        desc = arg1;
+        testFn = arg2!;
+    } else {
+        desc = "!unnamed_test"
+        testFn = arg1;
+    }
     currentTests.push({ desc, testFn });
 }
 
